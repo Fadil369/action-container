@@ -1,21 +1,73 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'BrainSAIT Action Container'
+description: 'Deploy and manage BrainSAIT healthcare AI services with automated infrastructure provisioning'
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  service-type:
+    description: 'Type of BrainSAIT service to deploy (api, agent, pipeline, storage)'
     required: true
-    default: '1000'
+    default: 'api'
+  environment:
+    description: 'Deployment environment (development, staging, production)'
+    required: true
+    default: 'development'
+  cloudflare-token:
+    description: 'Cloudflare API token for tunnel management'
+    required: false
+  domain:
+    description: 'Custom domain for service deployment'
+    required: false
+    default: 'brainsait.local'
+  health-check-url:
+    description: 'Health check endpoint for service monitoring'
+    required: false
+    default: '/health'
+  docker-image:
+    description: 'Docker image to deploy (defaults to BrainSAIT registry)'
+    required: false
+    default: 'ghcr.io/fadil369/brainsait:latest'
+  config-path:
+    description: 'Path to service configuration file'
+    required: false
+    default: './config/service.yml'
+  enable-monitoring:
+    description: 'Enable service monitoring and alerting'
+    required: false
+    default: 'true'
+  language-support:
+    description: 'Languages to support (arabic, english, both)'
+    required: false
+    default: 'both'
+  storage-volume:
+    description: 'Persistent volume size for data storage'
+    required: false
+    default: '10Gi'
 
-# Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  service-url:
+    description: 'Deployed service URL with Cloudflare tunnel'
+  health-status:
+    description: 'Service health check status'
+  deployment-id:
+    description: 'Unique deployment identifier'
+  tunnel-id:
+    description: 'Cloudflare tunnel ID (if applicable)'
+  container-logs:
+    description: 'Container deployment logs'
+  monitoring-dashboard:
+    description: 'URL to monitoring dashboard'
 
 runs:
-  using: docker
-  image: Dockerfile
+  using: 'docker'
+  image: 'Dockerfile'
   env:
-    INPUT_MILLISECONDS: ${{ inputs.milliseconds }}
+    BRAINSAIT_ENV: ${{ inputs.environment }}
+    SERVICE_TYPE: ${{ inputs['service-type'] }}
+    DOMAIN: ${{ inputs.domain }}
+    HEALTH_CHECK_URL: ${{ inputs['health-check-url'] }}
+    ENABLE_MONITORING: ${{ inputs['enable-monitoring'] }}
+    LANGUAGE_SUPPORT: ${{ inputs['language-support'] }}
+    STORAGE_VOLUME: ${{ inputs['storage-volume'] }}
+
+branding:
+  icon: 'brain'
+  color: 'blue'
