@@ -7,7 +7,7 @@ updates:
     groups:
       docker-minor:
         update-types:
-          - minor
+          - major
           - patch
 
   - package-ecosystem: github-actions
@@ -17,7 +17,7 @@ updates:
     groups:
       actions-minor:
         update-types:
-          - minor
+          - major
           - patch
 
   - package-ecosystem: npm
@@ -28,7 +28,7 @@ updates:
       npm-development:
         dependency-type: development
         update-types:
-          - minor
+          - major
           - patch
       npm-production:
         dependency-type: production
